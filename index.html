@@ -11,9 +11,9 @@
 body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:13px;line-height:1.5;min-height:100vh}
 
 /* LAYOUT */
-.shell{display:grid;grid-template-columns:220px 1fr;grid-template-rows:56px 1fr;min-height:100vh}
-.topbar{grid-column:1/-1;display:flex;align-items:center;padding:0 16px;gap:12px;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100}
-.sidebar{border-right:1px solid var(--border);background:var(--bg);padding:20px 0;display:flex;flex-direction:column;gap:2px;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;transition:transform .25s ease,width .25s ease}
+.shell{display:grid;grid-template-columns:220px 1fr;grid-template-rows:56px 1fr;height:100vh;overflow:hidden}
+.topbar{grid-column:1/-1;display:flex;align-items:center;padding:0 16px;gap:12px;border-bottom:1px solid var(--border);background:var(--bg);z-index:100}
+.sidebar{border-right:1px solid var(--border);background:var(--bg);padding:20px 0;display:flex;flex-direction:column;gap:2px;overflow-y:auto;transition:transform .25s ease,width .25s ease}
 .sidebar.collapsed{width:0;padding:0;overflow:hidden;border:none}
 .main{padding:24px;overflow-y:auto;background:var(--bg);min-width:0}
 .menu-btn{display:none;background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;padding:4px 6px;border-radius:var(--r);line-height:1}
@@ -21,7 +21,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-size:
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
 .sidebar-overlay.open{display:block}
 @media(max-width:768px){
-  .shell{grid-template-columns:1fr}
+  .shell{grid-template-columns:1fr;overflow:hidden}
   .sidebar{position:fixed;left:0;top:56px;height:calc(100vh - 56px);z-index:100;transform:translateX(-100%);width:240px}
   .sidebar.open{transform:translateX(0)}
   .menu-btn{display:flex;align-items:center;justify-content:center}
@@ -386,10 +386,6 @@ tbody td{padding:11px 14px;font-size:12.5px;vertical-align:middle}
     <div class="comms-grid" id="comms-grid"></div>
   </div>
 
-</main>
-</div>
-
-
   <!-- SPEC PAGE -->
   <div class="page" id="page-spec">
     <div class="page-header">
@@ -431,6 +427,9 @@ tbody td{padding:11px 14px;font-size:12.5px;vertical-align:middle}
       <div id="spec-arch-content"></div>
     </div>
   </div>
+
+</main>
+</div>
 
 <!-- DETAIL PANEL -->
 <div class="detail-overlay" id="detail-overlay" onclick="closeDetail()"></div>
@@ -668,7 +667,7 @@ function renderFlow(){
         const c=STAGE_COLORS[s];const pct=(sc[s]/total*100).toFixed(0);
         const inflow=flowData.filter(f=>f.to===s).reduce((a,b)=>a+b.count,0);
         const outflow=flowData.filter(f=>f.from===s).reduce((a,b)=>a+b.count,0);
-        return `<div style="flex:${sc[s]||0.5};min-width:60px;display:flex;flex-direction:column;gap:6px">
+        return `<div style="flex:1;min-width:70px;display:flex;flex-direction:column;gap:6px">
           <div style="background:${c}22;border:1px solid ${c}44;border-radius:var(--r);padding:8px 10px;text-align:center;cursor:pointer;transition:background .15s" onclick="selectFlowStage('${s}')" onmouseover="this.style.background='${c}33'" onmouseout="this.style.background='${c}22'">
             <div style="font-family:var(--font-d);font-size:18px;font-weight:500;color:${c}">${sc[s]}</div>
             <div style="font-size:10px;font-weight:500;color:${c};text-transform:capitalize;white-space:nowrap">${s.replace('_',' ')}</div>
